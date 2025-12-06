@@ -10,10 +10,12 @@ CONFIG += c++17
 
 SOURCES += \
     main.cpp \
+    maingamepage.cpp \
     secondpage.cpp \
     splashscreen.cpp
 
 HEADERS += \
+    maingamepage.h \
     secondpage.h \
     splashscreen.h
 

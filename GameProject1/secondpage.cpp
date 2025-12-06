@@ -1,4 +1,4 @@
-
+#include "maingamepage.h"
 #include "secondpage.h"
 #include <QLineEdit>
 #include <QLabel>
@@ -69,7 +69,27 @@ SecondPage::SecondPage(QWidget *parent) :
         "}"
         );
 
-
+    pushButtonSelectMap->setStyleSheet(
+        "QPushButton {"
+        "background: qlineargradient(x1:0, y1:0, x2:0, y2:1,"
+        "stop:0 #00b09b, stop:1 #96c93d);"
+        "color: white;"
+        "font-size: 18px;"
+        "font-weight: bold;"
+        "border: 2px solid #ffffff;"
+        "border-radius: 10px;"
+        "padding: 12px 24px;"
+        "margin: 10px;"
+        "}"
+        "QPushButton:hover {"
+        "background: qlineargradient(x1:0, y1:0, x2:0, y2:1,"
+        "stop:0 #00d4b1, stop:1 #a8e05c);"
+        "}"
+        "QPushButton:pressed {"
+        "background: qlineargradient(x1:0, y1:0, x2:0, y2:1,"
+        "stop:0 #009982, stop:1 #7da835);"
+        "}"
+        );
 
     labelError->setStyleSheet("QLabel { color: red; font-size: 14px; }");
     labelError->setAlignment(Qt::AlignCenter);
@@ -120,6 +140,7 @@ bool SecondPage::validatePlayerName(const QString &name, QString &errorMessage)
         if (ch.isLower()) hasLower = true;
         if (ch.isUpper()) hasUpper = true;
     }
+
     if (!hasDigit) {
         errorMessage = "نام باید شامل حداقل یک عدد باشد";
         return false;
@@ -220,8 +241,11 @@ void SecondPage::onSelectMapClicked()
             QMessageBox::information(this, "انتخاب نقشه",QString("نقشه انتخاب شده: نقشه %1\nبازیکن ۱: %2\nبازیکن ۲: %3")
                                                                         .arg(i + 1).arg(player1).arg(player2));
 
+            MainGamePage *mainGame = new MainGamePage(player1, player2, i);
+            mainGame->show();
 
-
+            mapDialog.accept();
+            this->close();
         });
 
         layout->addWidget(mapButton);

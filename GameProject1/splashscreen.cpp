@@ -1,5 +1,6 @@
 #include "splashscreen.h"
 #include "ui_splashscreen.h"
+#include "secondpage.h"
 #include <QMessageBox>
 
 SplashScreen::SplashScreen(QWidget *parent) :
@@ -57,5 +58,7 @@ void SplashScreen::on_pushButtonStart_clicked()
 
     QMessageBox::information(this, "start", "welcome to the game!\n");
 
-
+    SecondPage *secondPage = new SecondPage();
+    secondPage->show();
+    this->close();
 }

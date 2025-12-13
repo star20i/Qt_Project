@@ -10,12 +10,15 @@ CONFIG += c++17
 
 SOURCES += \
     main.cpp \
+    secondpage.cpp \
     splashscreen.cpp
 
 HEADERS += \
+    secondpage.h \
     splashscreen.h
 
 FORMS += \
+    secondpage.ui \
     splashscreen.ui
 
 # Default rules for deployment.

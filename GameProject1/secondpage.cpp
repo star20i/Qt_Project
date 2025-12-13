@@ -1,4 +1,4 @@
-
+#include "maingamepage.h"
 #include "secondpage.h"
 #include <QLineEdit>
 #include <QLabel>
@@ -241,7 +241,8 @@ void SecondPage::onSelectMapClicked()
             QMessageBox::information(this, "انتخاب نقشه",QString("نقشه انتخاب شده: نقشه %1\nبازیکن ۱: %2\nبازیکن ۲: %3")
                                                                         .arg(i + 1).arg(player1).arg(player2));
 
-
+            MainGamePage *mainGame = new MainGamePage(player1, player2, i);
+            mainGame->show();
 
             mapDialog.accept();
             this->close();

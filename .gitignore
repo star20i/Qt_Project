@@ -1,0 +1,28 @@
+in# Qt build files
+*.o
+*.obj
+*.exe
+*.dll
+*.so
+*.a
+*.user
+*.user.*
+*.pro.user
+*.pro.user.*
+*.qmake.stash
+*.autosave
+Makefile*
+build-*/
+debug/
+release/
+*.log
+
+# Qt generated files
+moc_*.cpp
+ui_*.h
+qrc_*.cpp
+
+# IDE
+.vscode/
+.idea/
+dex.html.txt.txt

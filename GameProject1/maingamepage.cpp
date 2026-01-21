@@ -17,24 +17,24 @@
 #include <QResizeEvent>
 #include <QLinearGradient>
 #include <QPushButton>
-#include <QList>
+#include <QPen>
+#include <QBrush>
 
 MainGamePage::MainGamePage(const QString &player1,
                            const QString &player2,
                            int mapIndex,
                            QWidget *parent)
-    :QWidget(parent)
-    ,m_player1(player1)
-    ,m_player2(player2)
-    ,m_mapIndex(mapIndex)
-    ,m_view(new QGraphicsView(this))
-    ,m_scene(new QGraphicsScene(this))
-    ,m_labelInfo(new QLabel(this))
-    ,m_titleLabel(new QLabel(this))
-    ,m_startButton(new QPushButton(this))
+    : QWidget(parent)
+    , m_player1(player1)
+    , m_player2(player2)
+    , m_mapIndex(mapIndex)
+    , m_view(new QGraphicsView(this))
+    , m_scene(new QGraphicsScene(this))
+    , m_labelInfo(new QLabel(this))
+    , m_titleLabel(new QLabel(this))
+    , m_startButton(new QPushButton(this))
 {
     setWindowTitle("UNDAUNTED - Main Game");
-
     setWindowState(Qt::WindowMaximized);
 
     QLinearGradient bgGrad(0, 0, 0, 800);
@@ -130,18 +130,15 @@ MainGamePage::MainGamePage(const QString &player1,
     layout->addWidget(m_labelInfo);
     layout->addWidget(m_startButton);
     layout->addWidget(m_view);
-
-    layout->setAlignment(m_startButton, Qt::AlignCenter);
+layout->setAlignment(m_startButton, Qt::AlignCenter);
     layout->setSpacing(4);
     layout->setContentsMargins(8, 8, 8, 8);
-
     layout->setStretch(0, 0);
     layout->setStretch(1, 0);
     layout->setStretch(2, 0);
     layout->setStretch(3, 1);
 
     setLayout(layout);
-
     this->setStyleSheet("background-color: #1e272e;");
 
     if (loadMap(m_mapIndex)) {
@@ -151,7 +148,7 @@ MainGamePage::MainGamePage(const QString &player1,
     }
 }
 
-MainGamePage::~MainGamePage(){}
+MainGamePage::~MainGamePage() {}
 
 void MainGamePage::resizeEvent(QResizeEvent *event)
 {
@@ -207,36 +204,142 @@ bool MainGamePage::loadMap(int mapIndex)
     return !m_board.isEmpty();
 }
 
-void MainGamePage::buildBoard()
-{
-    m_scene->clear();
+// ---------------- OOP helpers ----------------
 
+bool MainGamePage::computeTileMetrics(double &tileSize,
+                                      double &spacing,
+                                      int &rows,
+                                      int &maxCols) const
+{
     if (m_board.isEmpty())
-        return;
+        return false;
 
     QSizeF viewSize = m_view->viewport()->size();
     if (viewSize.width() <= 50 || viewSize.height() <= 50)
-        return;
-    const double spacing = 4.0;
+        return false;
 
-    int rows = m_board.size();
-    int maxCols = 0;
+    spacing = 4.0;
+    rows = m_board.size();
+
+    maxCols = 0;
     for (const auto &row : m_board)
         if (row.size() > maxCols)
             maxCols = row.size();
 
     double effectiveCols = maxCols + 0.5;
-
     double availableW = viewSize.width()  - 20;
     double availableH = viewSize.height() - 20;
 
     double tileSizeX = (availableW - (effectiveCols - 1) * spacing) / effectiveCols;
     double tileSizeY = (availableH - (rows - 1) * spacing) / rows;
 
-    double tileSize = qMin(tileSizeX, tileSizeY);
+    tileSize = qMin(tileSizeX, tileSizeY);
 
     if (tileSize > 110) tileSize = 110;
     if (tileSize < 40)  tileSize = 40;
+
+    return true;
+}
+
+bool MainGamePage::isARow(const QVector<TileCell> &row) const
+{
+    if (row.isEmpty() || row[0].id.isEmpty())
+        return true;
+    QChar letter = row[0].id.at(0).toUpper();
+    return (letter == 'A');
+}
+
+double MainGamePage::rowXOffset(bool isARowFlag, double tileSize) const
+{
+    return isARowFlag ? 0.0 : (tileSize / 2.0);
+}
+
+QColor MainGamePage::tileBaseColor(const TileCell &cell) const
+{
+    return cell.baseColorForRow();
+}
+
+QColor MainGamePage::tileColorByValue(QColor base, int value) const
+{
+    if (value == 1) return base.darker(115);
+    if (value == 2) return base.darker(135);
+    return base;
+}
+
+QBrush MainGamePage::tileBrush(const TileCell &cell, double tileSize) const
+{
+    QColor base = tileBaseColor(cell);
+    base = tileColorByValue(base, cell.value);
+
+    QLinearGradient grad(0, 0, 0, tileSize);
+    grad.setColorAt(0.0, base.lighter(115));
+    grad.setColorAt(1.0, base.darker(115));
+
+    return QBrush(grad);
+}
+
+QGraphicsRectItem* MainGamePage::createTile(const TileCell &cell,double x, double y,
+                                            double tileSize,
+                                            const QFont &idFont,
+                                            const QFont &valFont)
+{
+    auto *rect = m_scene->addRect(
+        x, y, tileSize, tileSize,
+        QPen(Qt::white, 2),
+        tileBrush(cell, tileSize)
+        );
+
+    // همان رفتار قبلی: ذخیره دیتا روی item
+    rect->setData(0, cell.id);
+    rect->setData(1, cell.value);
+
+    addTileTexts(rect, cell, x, y, tileSize, idFont, valFont);
+    return rect;
+}
+
+void MainGamePage::addTileTexts(QGraphicsRectItem * /*rect*/,
+                                const TileCell &cell,
+                                double x, double y,
+                                double tileSize,
+                                const QFont &idFont,
+                                const QFont &valFont)
+{
+    auto *idTxt = m_scene->addSimpleText(cell.id, idFont);
+    idTxt->setBrush(Qt::white);
+
+    QRectF tRect = idTxt->boundingRect();
+    double idX = x + (tileSize - tRect.width()) / 2.0;
+    double idY = y + (tileSize - tRect.height()) / 2.0 - 10.0;
+    idTxt->setPos(idX, idY);
+
+    auto *valTxt = m_scene->addSimpleText(QString::number(cell.value), valFont);
+    valTxt->setBrush(Qt::black);
+
+    QRectF vRect = valTxt->boundingRect();
+    double vX = x + tileSize - vRect.width() - 4.0;
+    double vY = y + tileSize - vRect.height() - 2.0;
+    valTxt->setPos(vX, vY);
+}
+
+void MainGamePage::finalizeSceneBounds()
+{
+    QRectF bounds = m_scene->itemsBoundingRect().adjusted(-10, -10, 10, 10);
+    m_scene->setSceneRect(bounds);
+}
+
+// ---------------- buildBoard (OOP version) ----------------
+
+void MainGamePage::buildBoard()
+{
+    m_scene->clear();
+
+    double tileSize = 0.0;
+    double spacing = 0.0;
+    int rows = 0;
+    int maxCols = 0;
+
+    if (!computeTileMetrics(tileSize, spacing, rows, maxCols))
+        return;
 
     QFont idFont("Arial", 12, QFont::Bold);
     QFont valFont("Arial", 9, QFont::Bold);
@@ -247,57 +350,15 @@ void MainGamePage::buildBoard()
             continue;
 
         double y = r * (tileSize + spacing);
-
-        QChar letter = row[0].id.at(0).toUpper();
-        bool isARow = (letter == 'A');
-
-        QColor colorA("#f1c40f");
-        QColor colorB("#9b59b6");
-
-        double xOffset = isARow ? 0.0 : (tileSize / 2.0);
+        bool aRow = isARow(row);
+        double xOffset = rowXOffset(aRow, tileSize);
 
         for (int c = 0; c < row.size(); ++c) {
             const TileCell &cell = row[c];
-
-            QColor base = isARow ? colorA : colorB;
-
-            if (cell.value == 1)
-                base = base.darker(115);
-            else if (cell.value == 2)
-                base = base.darker(135);
-
-            QLinearGradient grad(0, 0, 0, tileSize);
-            grad.setColorAt(0.0, base.lighter(115));
-            grad.setColorAt(1.0, base.darker(115));
-
             double x = xOffset + c * (tileSize + spacing);
-
-            QGraphicsRectItem *rect = m_scene->addRect(
-                x,y,tileSize,tileSize,QPen(Qt::white, 2),QBrush(grad)
-                );
-
-            rect->setData(0, cell.id);
-            rect->setData(1, cell.value);
-
-            QGraphicsSimpleTextItem *idTxt =m_scene->addSimpleText(cell.id, idFont);idTxt->setBrush(Qt::white);
-
-            QRectF rRect = rect->rect();
-            QRectF tRect = idTxt->boundingRect();
-
-            double idX = x + (rRect.width()  - tRect.width())  / 2.0;
-            double idY = y + (rRect.height() - tRect.height()) / 2.0 - 10.0;
-            idTxt->setPos(idX, idY);
-
-            QGraphicsSimpleTextItem *valTxt =m_scene->addSimpleText(QString::number(cell.value), valFont);
-            valTxt->setBrush(Qt::black);
-
-            QRectF vRect = valTxt->boundingRect();
-            double vX = x + rRect.width()  - vRect.width()  - 4.0;
-            double vY = y + rRect.height() - vRect.height() - 2.0;
-            valTxt->setPos(vX, vY);
+            createTile(cell, x, y, tileSize, idFont, valFont);
         }
     }
 
-    QRectF bounds = m_scene->itemsBoundingRect().adjusted(-10, -10, 10, 10);
-    m_scene->setSceneRect(bounds);
+    finalizeSceneBounds();
 }

@@ -117,7 +117,7 @@ SecondPage::~SecondPage(){}
 
 bool SecondPage::validatePlayerName(const QString &name, QString &errorMessage)
 {
-    const int MIN_LENGTH = 3;
+    const int MIN_LENGTH = 8;
 
     if (name.length() < MIN_LENGTH) {
         errorMessage = QString("نام باید حداقل %1 کاراکتر باشد").arg(MIN_LENGTH);

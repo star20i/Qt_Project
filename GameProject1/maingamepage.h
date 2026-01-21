@@ -4,17 +4,27 @@
 #include <QWidget>
 #include <QString>
 #include <QVector>
+#include <QColor>
 
 class QGraphicsView;
 class QGraphicsScene;
 class QLabel;
 class QPushButton;
 class QResizeEvent;
+class QGraphicsRectItem;
+class QFont;
 
 struct TileCell
 {
     QString id;
     int value;
+
+    // برای OOP: منطق رنگ پایه را به خود دیتا نزدیک می‌کنیم
+    QColor baseColorForRow() const {
+        // دقیقا مطابق منطق قبلی: ردیف A زرد، بقیه بنفش
+        QChar letter = id.isEmpty() ? QChar('A') : id.at(0).toUpper();
+        return (letter == 'A') ? QColor("#f1c40f") : QColor("#9b59b6");
+    }
 };
 
 class MainGamePage : public QWidget
@@ -31,9 +41,39 @@ public:
     void resizeEvent(QResizeEvent *event) override;
 
 private:
+    // قبلی‌ها
     bool loadMap(int mapIndex);
     void buildBoard();
 
+    // ---- OOP helpers (خروجی عین قبلی) ----
+    bool computeTileMetrics(double &tileSize,
+                            double &spacing,
+                            int &rows,
+                            int &maxCols) const;
+
+    bool isARow(const QVector<TileCell> &row) const;
+    double rowXOffset(bool isARow, double tileSize) const;
+
+    QColor tileBaseColor(const TileCell &cell) const;
+    QColor tileColorByValue(QColor base, int value) const;
+    QBrush tileBrush(const TileCell &cell, double tileSize) const;
+
+    QGraphicsRectItem* createTile(const TileCell &cell,
+                                  double x, double y,
+                                  double tileSize,
+                                  const QFont &idFont,
+                                  const QFont &valFont);
+
+    void addTileTexts(QGraphicsRectItem *rect,
+                      const TileCell &cell,
+                      double x, double y,
+                      double tileSize,
+                      const QFont &idFont,
+                      const QFont &valFont);
+
+    void finalizeSceneBounds();
+
+private:
     QString m_player1;
     QString m_player2;
     int m_mapIndex;
@@ -46,4 +86,5 @@ private:
     QLabel *m_titleLabel;
     QPushButton *m_startButton;
 };
+
 #endif

@@ -19,9 +19,7 @@ struct TileCell
     QString id;
     int value;
 
-    // برای OOP: منطق رنگ پایه را به خود دیتا نزدیک می‌کنیم
     QColor baseColorForRow() const {
-        // دقیقا مطابق منطق قبلی: ردیف A زرد، بقیه بنفش
         QChar letter = id.isEmpty() ? QChar('A') : id.at(0).toUpper();
         return (letter == 'A') ? QColor("#f1c40f") : QColor("#9b59b6");
     }
@@ -41,11 +39,9 @@ public:
     void resizeEvent(QResizeEvent *event) override;
 
 private:
-    // قبلی‌ها
     bool loadMap(int mapIndex);
     void buildBoard();
 
-    // ---- OOP helpers (خروجی عین قبلی) ----
     bool computeTileMetrics(double &tileSize,
                             double &spacing,
                             int &rows,

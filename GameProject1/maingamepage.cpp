@@ -204,8 +204,6 @@ bool MainGamePage::loadMap(int mapIndex)
     return !m_board.isEmpty();
 }
 
-// ---------------- OOP helpers ----------------
-
 bool MainGamePage::computeTileMetrics(double &tileSize,
                                       double &spacing,
                                       int &rows,
@@ -289,7 +287,6 @@ QGraphicsRectItem* MainGamePage::createTile(const TileCell &cell,double x, doubl
         tileBrush(cell, tileSize)
         );
 
-    // همان رفتار قبلی: ذخیره دیتا روی item
     rect->setData(0, cell.id);
     rect->setData(1, cell.value);
 
@@ -326,8 +323,6 @@ void MainGamePage::finalizeSceneBounds()
     QRectF bounds = m_scene->itemsBoundingRect().adjusted(-10, -10, 10, 10);
     m_scene->setSceneRect(bounds);
 }
-
-// ---------------- buildBoard (OOP version) ----------------
 
 void MainGamePage::buildBoard()
 {

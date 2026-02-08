@@ -54,3 +54,50 @@ bool Board::loadMapFile(const QString &filename)
 
     return !m_rows.isEmpty();
 }
+
+// همسایه‌سازی مطابق offset ردیف‌های A/B که در فایل‌هاست
+void Board::buildAdjacency()
+{
+    for(auto* n: m_nodes) n->neighbors.clear();
+
+    const int R = m_rows.size();
+    auto rowIsA = [&](int r)->bool{
+        if(m_rows[r].isEmpty()) return true;
+        return m_rows[r][0].startsWith('A');
+    };
+
+    auto addEdge = [&](const QString& from, const QString& to){
+        CellNode* a = get(from);
+        CellNode* b = get(to);
+        if(!a || !b) return;
+        if(!a->neighbors.contains(b)) a->neighbors.push_back(b);
+        if(!b->neighbors.contains(a)) b->neighbors.push_back(a);
+    };
+
+    for(int r=0;r<R;++r){
+        bool isA = rowIsA(r);
+        const auto &row = m_rows[r];
+
+        for(int c=0;c<row.size();++c){
+            if(c-1>=0) addEdge(row[c], row[c-1]);
+            if(c+1<row.size()) addEdge(row[c], row[c+1]);
+
+            auto addIf = [&](int rr, int cc){
+                if(rr<0||rr>=R) return;
+                const auto &rrw = m_rows[rr];
+                if(cc<0||cc>=rrw.size()) return;
+                addEdge(row[c], rrw[cc]);
+            };
+
+            // A row touches B row with (c-1,c)
+            // B row touches A row with (c,c+1)
+            if(isA){
+                addIf(r-1, c-1); addIf(r-1, c);
+                addIf(r+1, c-1); addIf(r+1, c);
+            }else{
+                addIf(r-1, c);   addIf(r-1, c+1);
+                addIf(r+1, c);   addIf(r+1, c+1);
+            }
+        }
+    }
+}

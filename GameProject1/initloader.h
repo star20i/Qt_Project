@@ -8,4 +8,4 @@ public:
     static bool applyInitFile(Board& board, const QString& filename);
 };
 
-#endif // INITLOADER_H
+#endif

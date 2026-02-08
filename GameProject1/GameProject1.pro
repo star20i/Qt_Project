@@ -12,6 +12,7 @@ SOURCES += \
     board.cpp \
     deck.cpp \
     gamestate.cpp \
+    initloader.cpp \
     main.cpp \
     maingamepage.cpp \
     secondpage.cpp \

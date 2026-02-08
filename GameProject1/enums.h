@@ -30,4 +30,13 @@ inline QString agentToString(AgentType t){
 }
 
 
+inline AgentType agentFromString(QString s){
+    s = s.trimmed().toLower();
+    if (s=="scout") return AgentType::Scout;
+    if (s=="sniper") return AgentType::Sniper;
+    if (s=="sergeant") return AgentType::Sergeant;
+    if (s=="seargeant") return AgentType::Sergeant; // در initها وجود دارد 7
+    return AgentType::None;
+}
+
 #endif

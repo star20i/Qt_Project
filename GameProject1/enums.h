@@ -13,7 +13,11 @@ inline Player playerFromChar(QChar c){
     return Player::None;
 }
 
-
+inline QChar playerToChar(Player p){
+    if (p==Player::A) return 'A';
+    if (p==Player::B) return 'B';
+    return '-';
+}
 
 
 

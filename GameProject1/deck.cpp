@@ -16,3 +16,8 @@ void Deck::shuffle()
         m_cards.swapItemsAt(i,j);
     }
 }
+
+AgentType Deck::top() const
+{
+    return m_cards.isEmpty() ? AgentType::None : m_cards.front();
+}

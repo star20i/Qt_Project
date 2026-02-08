@@ -130,7 +130,7 @@ MainGamePage::MainGamePage(const QString &player1,
     layout->addWidget(m_labelInfo);
     layout->addWidget(m_startButton);
     layout->addWidget(m_view);
-layout->setAlignment(m_startButton, Qt::AlignCenter);
+    layout->setAlignment(m_startButton, Qt::AlignCenter);
     layout->setSpacing(4);
     layout->setContentsMargins(8, 8, 8, 8);
     layout->setStretch(0, 0);

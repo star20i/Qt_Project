@@ -18,6 +18,7 @@ SOURCES += \
 HEADERS += \
     board.h \
     cellnode.h \
+    deck.h \
     enums.h \
     maingamepage.h \
     secondpage.h \

@@ -17,18 +17,15 @@ SOURCES += \
     splashscreen.cpp
 
 HEADERS += \
-<<<<<<< HEAD
     cellnode.h \
-=======
     board.h \
     cellnode.h \
     deck.h \
->>>>>>> feature-arefeh2
     enums.h \
+    gamestate.h \
     maingamepage.h \
     secondpage.h \
     splashscreen.h
-
 FORMS += \
     secondpage.ui \
     splashscreen.ui

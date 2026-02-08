@@ -21,3 +21,11 @@ AgentType Deck::top() const
 {
     return m_cards.isEmpty() ? AgentType::None : m_cards.front();
 }
+
+void Deck::rotateTopToBack()
+{
+    if(m_cards.isEmpty()) return;
+    AgentType t = m_cards.front();
+    m_cards.pop_front();
+    m_cards.push_back(t);
+}

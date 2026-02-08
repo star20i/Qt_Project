@@ -15,6 +15,7 @@ SOURCES += \
     splashscreen.cpp
 
 HEADERS += \
+    cellnode.h \
     enums.h \
     maingamepage.h \
     secondpage.h \

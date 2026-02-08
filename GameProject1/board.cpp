@@ -3,3 +3,5 @@
 #include <QTextStream>
 #include <QRegularExpression>
 #include <QStringConverter>
+
+Board::~Board() { clear(); }

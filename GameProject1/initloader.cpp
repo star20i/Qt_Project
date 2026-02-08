@@ -16,7 +16,7 @@ bool InitLoader::applyInitFile(Board &board, const QString &filename)
     in.setCodec("UTF-8");
 #endif
 
-    // CellID:Player,Thing   e.g. A03:A,scout  / A13:A,mark / A15:B,control 9
+
     QRegularExpression re("^\\s*([AB]\\d{2,3})\\s*:\\s*([AB])\\s*,\\s*([A-Za-z]+)\\s*$");
 
     while(!in.atEnd()){

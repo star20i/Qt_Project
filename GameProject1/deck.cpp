@@ -29,3 +29,14 @@ void Deck::rotateTopToBack()
     m_cards.pop_front();
     m_cards.push_back(t);
 }
+
+bool Deck::burnOne(AgentType t)
+{
+    for(int i=0;i<m_cards.size();++i){
+        if(m_cards[i]==t){
+            m_cards.removeAt(i);
+            return true;
+        }
+    }
+    return false;
+}

@@ -20,7 +20,14 @@ inline QChar playerToChar(Player p){
 }
 
 
-
+inline QString agentToString(AgentType t){
+    switch(t){
+    case AgentType::Scout: return "Scout";
+    case AgentType::Sniper: return "Sniper";
+    case AgentType::Sergeant: return "Sergeant";
+    default: return "None";
+    }
+}
 
 
 #endif

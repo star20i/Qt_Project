@@ -40,3 +40,10 @@ bool Deck::burnOne(AgentType t)
     }
     return false;
 }
+
+int Deck::countOf(AgentType t) const
+{
+    int c=0;
+    for(auto x: m_cards) if(x==t) c++;
+    return c;
+}

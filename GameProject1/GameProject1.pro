@@ -24,6 +24,7 @@ HEADERS += \
     deck.h \
     enums.h \
     gamestate.h \
+    initloader.h \
     maingamepage.h \
     secondpage.h \
     splashscreen.h

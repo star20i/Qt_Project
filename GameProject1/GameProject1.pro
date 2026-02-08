@@ -9,13 +9,21 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    board.cpp \
+    deck.cpp \
     main.cpp \
     maingamepage.cpp \
     secondpage.cpp \
     splashscreen.cpp
 
 HEADERS += \
+<<<<<<< HEAD
     cellnode.h \
+=======
+    board.h \
+    cellnode.h \
+    deck.h \
+>>>>>>> feature-arefeh2
     enums.h \
     maingamepage.h \
     secondpage.h \

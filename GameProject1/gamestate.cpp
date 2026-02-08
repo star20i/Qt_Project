@@ -21,7 +21,6 @@ void GameState::startTurn()
 
 void GameState::endTurn()
 {
-    // after one action: card goes to bottom 22
     Deck &d = (currentPlayer==Player::A) ? deckA : deckB;
     d.rotateTopToBack();
 
@@ -68,10 +67,8 @@ bool GameState::canEnter(CellNode *from, CellNode *to) const
     if(to->pieceOwner != Player::None) return false;
     if(!from->neighbors.contains(to)) return false;
 
-    // Scout move: to any adjacent even if not marked 23
     if(from->pieceType == AgentType::Scout) return true;
 
-    // Sniper/Sergeant move: destination must be marked by this player 24
     if(currentPlayer==Player::A) return to->markedA;
     return to->markedB;
 }
@@ -105,7 +102,6 @@ bool GameState::scoutMarkCurrent(const QString &scoutId)
     if(!s) return false;
     if(!(s->pieceOwner==currentPlayer && s->pieceType==AgentType::Scout)) return false;
 
-    // “خانه‌ای که از قبل دیده‌بانی نشده بود” => برای همان بازیکن نباید قبلاً mark شده باشد 25
     if(currentPlayer==Player::A){
         if(s->markedA) return false;
         s->markedA = true;
@@ -125,8 +121,6 @@ bool GameState::sergeantControlOrReleaseCurrent(const QString &sergId)
     Player me = currentPlayer;
     Player enemy = (me==Player::A) ? Player::B : Player::A;
 
-    // control: if enemy piece not there (true) and just set ownership 26
-    // release: if controlled by enemy and enemy piece not there and sergeant here 27
     if(c->controlOwner == enemy){
         c->controlOwner = Player::None;
         return true;
@@ -185,8 +179,6 @@ AttackResult GameState::attack(const QString &attackerId, const QString &defende
     auto path = bfsPath(att, def);
     if(path.isEmpty()) return out;
 
-    // criteria = sum shields on path + HP(defender) 28
-    // ignore cells that contain a piece 29
     int sumShield=0;
     for(int i=1; i+1<path.size(); ++i){
         CellNode* n = path[i];
@@ -195,7 +187,7 @@ AttackResult GameState::attack(const QString &attackerId, const QString &defende
     }
 
     int x = sumShield + hp(def->pieceType);
-    if(x > 10) x = 10; // تبصره 30
+    if(x > 10) x = 10;
 
     out.criteria = x;
     out.ok = true;
@@ -205,18 +197,18 @@ AttackResult GameState::attack(const QString &attackerId, const QString &defende
     for(int i=0;i<dCount;i++){
         int d = QRandomGenerator::global()->bounded(1, 11); // 1..10
         out.rolls.push_back(d);
-        if(d >= x) success = true; // at least one dice >= x 31
+        if(d >= x) success = true;
     }
     out.success = success;
 
     if(!success) return out;
 
-    // burn one card of defender type from enemy deck 32
+
     Deck &enemyDeck = (currentPlayer==Player::A) ? deckB : deckA;
     enemyDeck.burnOne(def->pieceType);
     out.burnedType = def->pieceType;
 
-    // if defender type cards all gone -> remove that piece type from board 33
+
     if(enemyDeck.countOf(def->pieceType)==0){
         for(auto* n: board.nodes()){
             if(n->pieceOwner==enemy && n->pieceType==def->pieceType){
@@ -235,7 +227,6 @@ bool GameState::checkWin(Player &winner) const
     Player me = currentPlayer;
     Player enemy = (me==Player::A) ? Player::B : Player::A;
 
-    // win1: remove all enemy pieces 34
     bool enemyHasPiece=false;
     for(auto* n: board.nodes()){
         if(n->pieceOwner==enemy){ enemyHasPiece=true; break; }
@@ -245,7 +236,6 @@ bool GameState::checkWin(Player &winner) const
         return true;
     }
 
-    // win2: control 7 cells 35
     int ctrl=0;
     for(auto* n: board.nodes())
         if(n->controlOwner==me) ctrl++;

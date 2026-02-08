@@ -27,7 +27,6 @@ bool Board::loadMapFile(const QString &filename)
     in.setCodec("UTF-8");
 #endif
 
-    // |A01:0|  (ID + shield 0..2)
     QRegularExpression re("\\|\\s*([A-Z]\\d{2,3})\\s*:\\s*([0-2])");
 
     while(!in.atEnd()){
@@ -55,7 +54,6 @@ bool Board::loadMapFile(const QString &filename)
     return !m_rows.isEmpty();
 }
 
-// همسایه‌سازی مطابق offset ردیف‌های A/B که در فایل‌هاست
 void Board::buildAdjacency()
 {
     for(auto* n: m_nodes) n->neighbors.clear();
@@ -89,8 +87,6 @@ void Board::buildAdjacency()
                 addEdge(row[c], rrw[cc]);
             };
 
-            // A row touches B row with (c-1,c)
-            // B row touches A row with (c,c+1)
             if(isA){
                 addIf(r-1, c-1); addIf(r-1, c);
                 addIf(r+1, c-1); addIf(r+1, c);

@@ -11,6 +11,7 @@ CONFIG += c++17
 SOURCES += \
     board.cpp \
     deck.cpp \
+    gamestate.cpp \
     main.cpp \
     maingamepage.cpp \
     secondpage.cpp \

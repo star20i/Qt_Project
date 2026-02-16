@@ -136,3 +136,32 @@ QString MainGamePage::currentCardText() const
 {
     return agentToString(gs.currentCard);
 }
+void MainGamePage::loadAll()
+{
+
+    qDebug() << "EXE DIR =" << QCoreApplication::applicationDirPath();
+    qDebug() << "MAP PATH =" << mapFileName();
+    qDebug() << "INIT PATH=" << initFileName();
+    qDebug() << "mapNumber =" << m_mapNumber;
+    qDebug() << "MAP =" << mapFileName();
+    qDebug() << "INIT=" << initFileName();
+
+    // map + init + adjacency
+    if(!gs.board.loadMapFile(mapFileName())){QMessageBox::critical(this, "Error", "Cannot open map file in working directory.");
+        return;
+    }
+    if(!InitLoader::applyInitFile(gs.board, initFileName())){
+        QMessageBox::critical(this, "Error", "Cannot open init file in working directory.");
+        return;
+    }
+    gs.board.buildAdjacency();
+
+    // background
+    QLinearGradient bg(0,0,0,800);
+    bg.setColorAt(0.0, QColor("#192a56"));
+    bg.setColorAt(1.0, QColor("#273c75"));
+    m_scene->setBackgroundBrush(bg);
+
+    m_topInfo->setText(QString("Player A: %1 | Player B: %2 | Map: %3")
+                           .arg(m_p1).arg(m_p2).arg(m_mapNumber));
+}

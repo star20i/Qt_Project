@@ -439,3 +439,6 @@ void MainGamePage::onTileClicked(const QString &id)
         highlightIds(dests);
         return;
     }
+    if(m_mode==Mode::PickDestMove){
+        if(m_selectedSource.isEmpty()) return;
+        if(!gs.movePiece(m_selectedSource, id)) return;

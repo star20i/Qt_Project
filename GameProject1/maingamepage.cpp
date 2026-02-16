@@ -504,3 +504,6 @@ void MainGamePage::onTileClicked(const QString &id)
 
         Player winner;
         if(gs.checkWin(winner)){
+            QMessageBox::information(this, "WIN", QString("Player %1 wins!").arg(playerToChar(winner)));
+            return;
+        }

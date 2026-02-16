@@ -476,3 +476,6 @@ void MainGamePage::onTileClicked(const QString &id)
             rolls += QString::number(res.rolls[i]);
             if(i+1<res.rolls.size()) rolls += ", ";
         }
+        if(!res.success){
+            QMessageBox::information(this, "Attack",
+                                     QString("FAILED\nCriteria=%1\nRolls=%2").arg(res.criteria).arg(rolls));

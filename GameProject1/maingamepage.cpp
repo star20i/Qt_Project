@@ -423,3 +423,7 @@ void MainGamePage::onTileClicked(const QString &id)
 {
     CellNode* n = gs.board.get(id);
     if(!n) return;
+    if(m_mode==Mode::PickSourceMove){
+        // must be your piece & current card type
+        if(!(n->pieceOwner==gs.currentPlayer && n->pieceType==gs.currentCard)) return;
+        m_selectedSource = id;

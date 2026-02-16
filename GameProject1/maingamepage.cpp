@@ -494,3 +494,6 @@ void MainGamePage::onTileClicked(const QString &id)
         endTurn();
         return;
     }
+    if(m_mode==Mode::PickScoutForMark){
+        if(!(n->pieceOwner==gs.currentPlayer && n->pieceType==AgentType::Scout)) return;
+        if(!gs.scoutMarkCurrent(id)){

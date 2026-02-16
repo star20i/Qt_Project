@@ -386,3 +386,27 @@ void MainGamePage::beginSpecial()
         for(auto* n: gs.board.nodes()){
             if(n->pieceOwner==gs.currentPlayer && n->pieceType==AgentType::Scout)
                 ids.insert(n->id);
+        }
+        if(ids.isEmpty()){
+            QMessageBox::information(this, "Scout", "No Scout on board.");
+            return;
+        }
+        setMode(Mode::PickScoutForMark, "Pick your SCOUT to mark its current cell (if unmarked).");
+        highlightIds(ids);
+        return;
+    }
+
+    if(gs.currentCard==AgentType::Sergeant){
+        QSet<QString> ids;
+        for(auto* n: gs.board.nodes()){
+            if(n->pieceOwner==gs.currentPlayer && n->pieceType==AgentType::Sergeant)
+                ids.insert(n->id);
+        }
+        if(ids.isEmpty()){
+            QMessageBox::information(this, "Sergeant", "No Sergeant on board.");
+            return;
+        }
+        setMode(Mode::PickSergeantForCtrlRel, "Pick your SERGEANT to Control/Release its current cell.");
+        highlightIds(ids);
+        return;
+    }

@@ -276,3 +276,9 @@ void MainGamePage::rebuildScene()
 
     updateOverlays();
 }
+QString MainGamePage::pieceLabel(Player owner, AgentType t) const
+{
+    if(owner==Player::None || t==AgentType::None) return "";
+    QString shortT = agentToString(t).left(1).toUpper();
+    return QString("%1:%2").arg(playerToChar(owner)).arg(shortT);
+}

@@ -18,3 +18,14 @@
 #include <QBrush>
 #include <QLinearGradient>
 #include <QDebug>
+
+static QColor baseColorForRowId(const QString& id){
+    if(id.startsWith('A')) return QColor("#f1c40f");
+    return QColor("#9b59b6");
+}
+
+static QColor colorByShield(QColor base, int shield){
+    if(shield==1) return base.darker(115);
+    if(shield==2) return base.darker(135);
+    return base;
+}

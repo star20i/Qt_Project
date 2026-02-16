@@ -365,3 +365,16 @@ void MainGamePage::beginMove()
     highlightIds(ids);
 }
 
+void MainGamePage::beginAttack()
+{
+    auto sources = gs.sourcesForCurrentCard();
+    if(sources.isEmpty()){
+        QMessageBox::information(this, "Attack", "No attacker of this card type on board.");
+        return;
+    }
+    QSet<QString> ids;
+    for(const auto& s: sources) ids.insert(s);
+
+    setMode(Mode::PickSourceAttack, "Pick your piece to ATTACK with.");
+    highlightIds(ids);
+}

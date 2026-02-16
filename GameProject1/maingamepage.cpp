@@ -282,3 +282,39 @@ QString MainGamePage::pieceLabel(Player owner, AgentType t) const
     QString shortT = agentToString(t).left(1).toUpper();
     return QString("%1:%2").arg(playerToChar(owner)).arg(shortT);
 }
+void MainGamePage::updateOverlays()
+{
+    // update top turn info
+    m_turnInfo->setText(QString("Turn: %1 (%2) | Card: %3")
+                            .arg(playerToChar(gs.currentPlayer))
+                            .arg(playerName(gs.currentPlayer))
+                            .arg(currentCardText()));
+
+    for(auto it=m_ui.begin(); it!=m_ui.end(); ++it){
+        const QString id = it.key();
+        TileUI &ui = it.value();
+        CellNode* n = gs.board.get(id);
+        if(!n) continue;
+
+        // mark
+        QString m;
+        if(n->markedA || n->markedB){
+            m = "M:";
+            if(n->markedA) m += "A";
+            if(n->markedB) m += "B";
+        }
+        ui.markTxt->setText(m);
+
+        // control
+        QString c;
+        if(n->controlOwner==Player::A) c="C:A";
+        else if(n->controlOwner==Player::B) c="C:B";
+        ui.ctrlTxt->setText(c);
+
+        // piece
+        ui.pieceTxt->setText(pieceLabel(n->pieceOwner, n->pieceType));
+        if(n->pieceOwner==Player::A) ui.pieceTxt->setBrush(QColor("#e84118"));
+        else if(n->pieceOwner==Player::B) ui.pieceTxt->setBrush(QColor("#0097e6"));
+        else ui.pieceTxt->setBrush(Qt::black);
+    }
+}

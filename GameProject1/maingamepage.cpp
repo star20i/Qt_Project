@@ -331,3 +331,13 @@ void MainGamePage::setMode(Mode m, const QString &hint)
     else if(gs.currentCard==AgentType::Sergeant) m_btnSpecial->setText("Sergeant (Control/Release)");
     else m_btnSpecial->setText("Special");
 }
+
+void MainGamePage::clearHighlights()
+{
+    for(auto it=m_ui.begin(); it!=m_ui.end(); ++it){
+        auto &ui = it.value();
+        ui.rect->setPen(QPen(Qt::white, 2));
+        ui.highlighted = false;
+    }
+}
+

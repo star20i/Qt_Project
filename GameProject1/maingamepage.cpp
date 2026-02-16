@@ -462,3 +462,8 @@ void MainGamePage::onTileClicked(const QString &id)
             QMessageBox::information(this, "Attack", "No enemy target on board.");
             return;
         }
+        m_mode = Mode::PickTargetAttack;
+        m_hint->setText("Pick enemy target.");
+        highlightIds(targets);
+        return;
+    }

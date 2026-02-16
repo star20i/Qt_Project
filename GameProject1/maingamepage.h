@@ -64,3 +64,18 @@ int main() {
     printEntity(player1);  // Player
     printEntity(enemy1);   // Enemy
     printEntity(npc1);     // NPC
+
+
+
+    // استفاده با اشاره‌گر برای نمایش پلی‌مورفیسم
+    cout << "\nبا اشاره‌گر:" << endl;
+
+    Entity* entities[] = {&player1, &enemy1, &npc1};
+
+    for (int i = 0; i < 3; i++) {
+        cout << entities[i]->type() << endl;
+    }
+
+    return 0;
+}
+

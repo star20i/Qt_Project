@@ -53,3 +53,14 @@ public:
 void printEntity(const Entity& e) {
     cout << e.type() << endl;
 }
+int main() {
+    // ایجاد نمونه‌ها
+    Player player1(1, "Arash");
+    Enemy enemy1(2, "Dragon");
+    NPC npc1(3, "Merchant");
+
+    // استفاده پلی‌مورفیک
+    cout << "انواع موجودیت‌ها:" << endl;
+    printEntity(player1);  // Player
+    printEntity(enemy1);   // Enemy
+    printEntity(npc1);     // NPC

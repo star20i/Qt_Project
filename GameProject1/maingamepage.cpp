@@ -62,3 +62,56 @@ MainGamePage::MainGamePage(const QString &player1,
     gs.initNewGame();
     setMode(Mode::Idle, "Choose an action for the current card.");
 }
+MainGamePage::~MainGamePage() {}
+
+void MainGamePage::buildUI()
+{
+    m_view = new QGraphicsView(this);
+    m_scene = new QGraphicsScene(this);
+    m_view->setScene(m_scene);
+    m_view->setRenderHint(QPainter::Antialiasing);
+    m_view->setStyleSheet("QGraphicsView{background:transparent;border:none;}");
+    m_view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    m_view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    m_view->setResizeAnchor(QGraphicsView::AnchorViewCenter);
+    m_view->setTransformationAnchor(QGraphicsView::AnchorViewCenter);
+
+    m_topInfo = new QLabel(this);
+    m_topInfo->setAlignment(Qt::AlignCenter);
+    m_topInfo->setStyleSheet("QLabel{color:white;font-weight:bold;background:#2c3e50;padding:6px;}");
+
+    m_turnInfo = new QLabel(this);
+    m_turnInfo->setAlignment(Qt::AlignCenter);
+    m_turnInfo->setStyleSheet("QLabel{color:#00ffff;font-weight:bold;padding:4px;}");
+
+    m_hint = new QLabel(this);
+    m_hint->setAlignment(Qt::AlignCenter);
+    m_hint->setStyleSheet("QLabel{color:black;padding:4px;}");
+
+    m_btnMove = new QPushButton("Move", this);
+    m_btnAttack = new QPushButton("Attack", this);
+    m_btnSpecial = new QPushButton("Special", this);
+    m_btnEndTurn = new QPushButton("End Turn", this);
+
+    connect(m_btnMove, &QPushButton::clicked, this, &MainGamePage::beginMove);
+    connect(m_btnAttack, &QPushButton::clicked, this, &MainGamePage::beginAttack);
+    connect(m_btnSpecial, &QPushButton::clicked, this, &MainGamePage::beginSpecial);
+    connect(m_btnEndTurn, &QPushButton::clicked, this, &MainGamePage::endTurn);
+
+    auto* btnRow = new QHBoxLayout();
+    btnRow->addStretch(1);
+    btnRow->addWidget(m_btnMove);
+    btnRow->addWidget(m_btnAttack);
+    btnRow->addWidget(m_btnSpecial);
+    btnRow->addWidget(m_btnEndTurn);
+    btnRow->addStretch(1);
+
+    auto* layout = new QVBoxLayout(this);
+    layout->addWidget(m_topInfo);
+    layout->addWidget(m_turnInfo);
+    layout->addWidget(m_hint);
+    layout->addLayout(btnRow);
+    layout->addWidget(m_view);
+    layout->setContentsMargins(8,8,8,8);
+    setLayout(layout);
+}

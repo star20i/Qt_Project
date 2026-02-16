@@ -11,20 +11,24 @@ CONFIG += c++17
 SOURCES += \
     board.cpp \
     deck.cpp \
+    gamestate.cpp \
+    initloader.cpp \
     main.cpp \
     maingamepage.cpp \
     secondpage.cpp \
     splashscreen.cpp
 
 HEADERS += \
+    cellnode.h \
     board.h \
     cellnode.h \
     deck.h \
     enums.h \
+    gamestate.h \
+    initloader.h \
     maingamepage.h \
     secondpage.h \
     splashscreen.h
-
 FORMS += \
     secondpage.ui \
     splashscreen.ui

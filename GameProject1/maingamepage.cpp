@@ -261,3 +261,18 @@ void MainGamePage::rebuildScene()
     for(auto it=m_ui.begin(); it!=m_ui.end(); ++it){
         it.value().rect->setFlag(QGraphicsItem::ItemIsSelectable, true);
     }
+    connect(m_scene, &QGraphicsScene::selectionChanged, this, [this](){
+        auto items = m_scene->selectedItems();
+        if(items.isEmpty()) return;
+        auto* it = items.first();
+        QString id = it->data(0).toString();
+        // clear selection so next click works
+        it->setSelected(false);
+        onTileClicked(id);
+    });
+
+    QRectF bounds = m_scene->itemsBoundingRect().adjusted(-10,-10,10,10);
+    m_scene->setSceneRect(bounds);
+
+    updateOverlays();
+}

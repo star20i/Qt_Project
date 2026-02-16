@@ -48,3 +48,8 @@ public:
         return "NPC";
     }
 };
+
+// تابع پلی‌مورفیک
+void printEntity(const Entity& e) {
+    cout << e.type() << endl;
+}

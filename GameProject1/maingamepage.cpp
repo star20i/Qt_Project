@@ -448,3 +448,7 @@ void MainGamePage::onTileClicked(const QString &id)
             QMessageBox::information(this, "WIN", QString("Player %1 wins!").arg(playerToChar(winner)));
             return;
         }
+        // exactly one action per turn -> end turn (طبق مکانیزم نوبتی) 37
+        endTurn();
+        return;
+    }

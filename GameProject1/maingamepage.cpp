@@ -471,3 +471,8 @@ void MainGamePage::onTileClicked(const QString &id)
         if(m_selectedSource.isEmpty()) return;
         AttackResult res = gs.attack(m_selectedSource, id);
         if(!res.ok) return;
+        QString rolls;
+        for(int i=0;i<res.rolls.size();++i){
+            rolls += QString::number(res.rolls[i]);
+            if(i+1<res.rolls.size()) rolls += ", ";
+        }

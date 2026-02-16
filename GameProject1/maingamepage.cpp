@@ -170,3 +170,30 @@ void MainGamePage::resizeEvent(QResizeEvent *event)
     QWidget::resizeEvent(event);
     rebuildScene();
 }
+void MainGamePage::rebuildScene()
+{
+    m_scene->clear();
+    m_ui.clear();
+
+    const auto& rows = gs.board.rows();
+    if(rows.isEmpty()) return;
+
+    // dynamic tile size
+    QSizeF viewSize = m_view->viewport()->size();
+    double spacing = 4.0;
+
+    int maxCols=0;
+    for(const auto& r: rows) maxCols = qMax(maxCols, r.size());
+
+    double effCols = maxCols + 0.5;
+    double availableW = viewSize.width() - 20;
+    double availableH = viewSize.height() - 20;
+
+    double tileX = (availableW - (effCols-1)*spacing)/effCols;
+    double tileY = (availableH - (rows.size()-1)*spacing)/rows.size();
+    double tile = qMin(tileX, tileY);
+    if(tile>110) tile=110;
+    if(tile<40) tile=40;
+
+    QFont idFont("Arial", 12, QFont::Bold);
+    QFont small("Arial", 8, QFont::Bold);

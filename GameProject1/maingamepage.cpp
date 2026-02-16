@@ -197,3 +197,59 @@ void MainGamePage::rebuildScene()
 
     QFont idFont("Arial", 12, QFont::Bold);
     QFont small("Arial", 8, QFont::Bold);
+
+    for(int r=0;r<rows.size();++r){
+        const auto& row = rows[r];
+        if(row.isEmpty()) continue;
+
+        bool isA = row[0].startsWith('A');
+        double xOffset = isA ? 0.0 : (tile/2.0);
+        double y = r*(tile+spacing);
+
+        for(int c=0;c<row.size();++c){
+            QString id = row[c];
+            CellNode* n = gs.board.get(id);
+            if(!n) continue;
+
+            double x = xOffset + c*(tile+spacing);
+
+            QColor base = baseColorForRowId(id);
+            QColor col  = colorByShield(base, n->shield);
+
+            QLinearGradient grad(0,0,0,tile);
+            grad.setColorAt(0.0, col.lighter(115));
+            grad.setColorAt(1.0, col.darker(115));
+
+            auto* rect = m_scene->addRect(QRectF(x,y,tile,tile), QPen(Qt::white,2), QBrush(grad));
+            rect->setData(0, id); // store id
+
+            TileUI ui;
+            ui.rect = rect;
+
+            auto* idTxt = m_scene->addSimpleText(id, idFont);
+            idTxt->setBrush(Qt::white);
+            QRectF b = idTxt->boundingRect();
+            idTxt->setPos(x + (tile-b.width())/2.0, y + 4);
+            ui.idTxt = idTxt;
+
+            auto* shieldTxt = m_scene->addSimpleText(QString::number(n->shield), small);
+            shieldTxt->setBrush(Qt::black);
+            QRectF sb = shieldTxt->boundingRect();
+            shieldTxt->setPos(x + tile - sb.width() - 4, y + tile - sb.height() - 2);
+            ui.shieldTxt = shieldTxt;
+
+            ui.markTxt = m_scene->addSimpleText("", small);
+            ui.markTxt->setBrush(Qt::white);
+            ui.markTxt->setPos(x + 4, y + 2);
+
+            ui.ctrlTxt = m_scene->addSimpleText("", small);
+            ui.ctrlTxt->setBrush(Qt::white);
+            ui.ctrlTxt->setPos(x + 4, y + tile - 14);
+
+            ui.pieceTxt = m_scene->addSimpleText("", QFont("Arial", 11, QFont::Black));
+            ui.pieceTxt->setBrush(Qt::black);
+            ui.pieceTxt->setPos(x + 4, y + tile/2.0 - 6);
+
+            m_ui.insert(id, ui);
+        }
+    }

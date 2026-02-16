@@ -378,3 +378,11 @@ void MainGamePage::beginAttack()
     setMode(Mode::PickSourceAttack, "Pick your piece to ATTACK with.");
     highlightIds(ids);
 }
+void MainGamePage::beginSpecial()
+{
+    if(gs.currentCard==AgentType::Scout){
+        // pick a scout (must be yours and scout)
+        QSet<QString> ids;
+        for(auto* n: gs.board.nodes()){
+            if(n->pieceOwner==gs.currentPlayer && n->pieceType==AgentType::Scout)
+                ids.insert(n->id);

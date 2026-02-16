@@ -469,3 +469,5 @@ void MainGamePage::onTileClicked(const QString &id)
     }
     if(m_mode==Mode::PickTargetAttack){
         if(m_selectedSource.isEmpty()) return;
+        AttackResult res = gs.attack(m_selectedSource, id);
+        if(!res.ok) return;

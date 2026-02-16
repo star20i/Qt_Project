@@ -485,3 +485,5 @@ void MainGamePage::onTileClicked(const QString &id)
                                          .arg(res.criteria).arg(rolls).arg(agentToString(res.burnedType))
                                          .arg(res.pieceRemoved ? "Yes":"No"));
         }
+        updateOverlays();
+        Player winner;

@@ -427,3 +427,10 @@ void MainGamePage::onTileClicked(const QString &id)
         // must be your piece & current card type
         if(!(n->pieceOwner==gs.currentPlayer && n->pieceType==gs.currentCard)) return;
         m_selectedSource = id;
+
+        QSet<QString> dests;
+        for(const auto& d: gs.moveDests(id)) dests.insert(d);
+        if(dests.isEmpty()){
+            QMessageBox::information(this, "Move", "No valid destination.");
+            return;
+        }

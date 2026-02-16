@@ -467,3 +467,5 @@ void MainGamePage::onTileClicked(const QString &id)
         highlightIds(targets);
         return;
     }
+    if(m_mode==Mode::PickTargetAttack){
+        if(m_selectedSource.isEmpty()) return;

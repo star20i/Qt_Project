@@ -452,3 +452,13 @@ void MainGamePage::onTileClicked(const QString &id)
         endTurn();
         return;
     }
+    if(m_mode==Mode::PickSourceAttack){
+        if(!(n->pieceOwner==gs.currentPlayer && n->pieceType==gs.currentCard)) return;
+        m_selectedSource = id;
+
+        QSet<QString> targets;
+        for(const auto& t: gs.enemyTargets()) targets.insert(t);
+        if(targets.isEmpty()){
+            QMessageBox::information(this, "Attack", "No enemy target on board.");
+            return;
+        }

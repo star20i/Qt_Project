@@ -442,3 +442,9 @@ void MainGamePage::onTileClicked(const QString &id)
     if(m_mode==Mode::PickDestMove){
         if(m_selectedSource.isEmpty()) return;
         if(!gs.movePiece(m_selectedSource, id)) return;
+        updateOverlays();
+        Player winner;
+        if(gs.checkWin(winner)){
+            QMessageBox::information(this, "WIN", QString("Player %1 wins!").arg(playerToChar(winner)));
+            return;
+        }

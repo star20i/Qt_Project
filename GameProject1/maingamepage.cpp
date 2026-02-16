@@ -515,3 +515,8 @@ void MainGamePage::onTileClicked(const QString &id)
         if(!(n->pieceOwner==gs.currentPlayer && n->pieceType==AgentType::Sergeant)) return;
         if(!gs.sergeantControlOrReleaseCurrent(id)) return;
         updateOverlays();
+        Player winner;
+        if(gs.checkWin(winner)){
+            QMessageBox::information(this, "WIN", QString("Player %1 wins!").arg(playerToChar(winner)));
+            return;
+        }

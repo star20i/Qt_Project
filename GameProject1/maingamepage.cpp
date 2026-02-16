@@ -44,3 +44,21 @@ static QString pickExisting(const QString& a, const QString& b)
     if (QFileInfo::exists(a)) return a;
     return b; // اگر a نبود، b رو برمی‌گردونه (بعداً error می‌گیریم اگر این هم نبود)
 }
+MainGamePage::MainGamePage(const QString &player1,
+                           const QString &player2,
+                           int mapNumber,
+                           QWidget *parent)
+    : QWidget(parent)
+    , m_p1(player1)
+    , m_p2(player2)
+    , m_mapNumber(mapNumber + 1)
+{
+    setWindowTitle("UNDAUNTED - Phase 2");
+    setWindowState(Qt::WindowMaximized);
+
+    buildUI();
+    loadAll();
+    rebuildScene();
+    gs.initNewGame();
+    setMode(Mode::Idle, "Choose an action for the current card.");
+}

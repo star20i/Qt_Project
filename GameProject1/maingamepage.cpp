@@ -351,3 +351,17 @@ void MainGamePage::highlightIds(const QSet<QString> &ids)
         }
     }
 }
+void MainGamePage::beginMove()
+{
+    auto sources = gs.sourcesForCurrentCard();
+    if(sources.isEmpty()){
+        QMessageBox::information(this, "Move", "No piece of this card type on board.");
+        return;
+    }
+    QSet<QString> ids;
+    for(const auto& s: sources) ids.insert(s);
+
+    setMode(Mode::PickSourceMove, "Pick your piece to MOVE.");
+    highlightIds(ids);
+}
+

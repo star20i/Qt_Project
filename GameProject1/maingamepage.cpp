@@ -115,3 +115,24 @@ void MainGamePage::buildUI()
     layout->setContentsMargins(8,8,8,8);
     setLayout(layout);
 }
+QString MainGamePage::mapFileName() const
+{
+    return fileNextToExe(QString("%1.txt").arg(m_mapNumber));  // m_mapNumber باید 1..5 باشد
+}
+
+QString MainGamePage::initFileName() const
+{
+    return fileNextToExe(QString("init%1.txt").arg(m_mapNumber));
+}
+
+QString MainGamePage::playerName(Player p) const
+{
+    if(p==Player::A) return m_p1;
+    if(p==Player::B) return m_p2;
+    return "-";
+}
+
+QString MainGamePage::currentCardText() const
+{
+    return agentToString(gs.currentCard);
+}

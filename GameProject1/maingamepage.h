@@ -37,3 +37,14 @@ public:
         return "Enemy";
     }
 };
+
+
+NPC
+    class NPC : public Entity {
+public:
+    NPC(int id, string name) : Entity(id, name) {}
+
+    string type() const override {
+        return "NPC";
+    }
+};

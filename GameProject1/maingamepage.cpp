@@ -340,4 +340,14 @@ void MainGamePage::clearHighlights()
         ui.highlighted = false;
     }
 }
-
+void MainGamePage::highlightIds(const QSet<QString> &ids)
+{
+    clearHighlights();
+    for(const auto& id: ids){
+        if(m_ui.contains(id)){
+            auto &ui = m_ui[id];
+            ui.rect->setPen(QPen(QColor("#00ffff"), 4));
+            ui.highlighted = true;
+        }
+    }
+}

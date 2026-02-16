@@ -410,3 +410,12 @@ void MainGamePage::beginSpecial()
         highlightIds(ids);
         return;
     }
+    QMessageBox::information(this, "Special", "This card has no special action.");
+}
+
+void MainGamePage::endTurn()
+{
+    gs.endTurn();
+    setMode(Mode::Idle, "Choose an action for the current card.");
+    updateOverlays();
+}

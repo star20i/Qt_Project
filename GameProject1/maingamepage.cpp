@@ -165,3 +165,8 @@ void MainGamePage::loadAll()
     m_topInfo->setText(QString("Player A: %1 | Player B: %2 | Map: %3")
                            .arg(m_p1).arg(m_p2).arg(m_mapNumber));
 }
+void MainGamePage::resizeEvent(QResizeEvent *event)
+{
+    QWidget::resizeEvent(event);
+    rebuildScene();
+}

@@ -497,3 +497,6 @@ void MainGamePage::onTileClicked(const QString &id)
     if(m_mode==Mode::PickScoutForMark){
         if(!(n->pieceOwner==gs.currentPlayer && n->pieceType==AgentType::Scout)) return;
         if(!gs.scoutMarkCurrent(id)){
+            QMessageBox::information(this, "Scout", "This cell is already marked for you.");
+            return;
+        }

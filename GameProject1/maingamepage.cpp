@@ -419,3 +419,7 @@ void MainGamePage::endTurn()
     setMode(Mode::Idle, "Choose an action for the current card.");
     updateOverlays();
 }
+void MainGamePage::onTileClicked(const QString &id)
+{
+    CellNode* n = gs.board.get(id);
+    if(!n) return;

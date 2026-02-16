@@ -160,7 +160,7 @@ bool MainGamePage::loadMap(int mapIndex)
 {
     QStringList fileNames = { "1.txt", "2.txt", "3.txt", "4.txt", "5.txt" };
 
-    if (mapIndex < 0 || mapIndex >= fileNames.size())
+    if (mapIndex < 0  mapIndex >= fileNames.size())
         return false;
 
     QFile file(fileNames[mapIndex]);
@@ -213,7 +213,11 @@ bool MainGamePage::computeTileMetrics(double &tileSize,
         return false;
 
     QSizeF viewSize = m_view->viewport()->size();
+<<<<<<< Updated upstream
     if (viewSize.width() <= 50 || viewSize.height() <= 50)
+=======
+    if (viewSize.width() <= 50  viewSize.height() <= 50)
+>>>>>>> Stashed changes
         return false;
 
     spacing = 4.0;

@@ -500,3 +500,7 @@ void MainGamePage::onTileClicked(const QString &id)
             QMessageBox::information(this, "Scout", "This cell is already marked for you.");
             return;
         }
+        updateOverlays();
+
+        Player winner;
+        if(gs.checkWin(winner)){

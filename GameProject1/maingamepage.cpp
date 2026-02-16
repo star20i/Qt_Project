@@ -479,3 +479,9 @@ void MainGamePage::onTileClicked(const QString &id)
         if(!res.success){
             QMessageBox::information(this, "Attack",
                                      QString("FAILED\nCriteria=%1\nRolls=%2").arg(res.criteria).arg(rolls));
+        }else{
+            QMessageBox::information(this, "Attack",
+                                     QString("SUCCESS\nCriteria=%1\nRolls=%2\nBurned=%3\nPieceRemoved=%4")
+                                         .arg(res.criteria).arg(rolls).arg(agentToString(res.burnedType))
+                                         .arg(res.pieceRemoved ? "Yes":"No"));
+        }

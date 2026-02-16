@@ -318,3 +318,16 @@ void MainGamePage::updateOverlays()
         else ui.pieceTxt->setBrush(Qt::black);
     }
 }
+
+void MainGamePage::setMode(Mode m, const QString &hint)
+{
+    m_mode = m;
+    m_hint->setText(hint);
+    clearHighlights();
+    m_selectedSource.clear();
+
+    // Special button text to be explicit for presentation
+    if(gs.currentCard==AgentType::Scout) m_btnSpecial->setText("Scout (Mark)");
+    else if(gs.currentCard==AgentType::Sergeant) m_btnSpecial->setText("Sergeant (Control/Release)");
+    else m_btnSpecial->setText("Special");
+}

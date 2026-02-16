@@ -29,3 +29,18 @@ static QColor colorByShield(QColor base, int shield){
     if(shield==2) return base.darker(135);
     return base;
 }
+static QString fileNextToExe(const QString& name)
+{
+    return QDir(QCoreApplication::applicationDirPath()).filePath(name);
+}
+
+static QString exeDirPath()
+{
+    return QCoreApplication::applicationDirPath();
+}
+
+static QString pickExisting(const QString& a, const QString& b)
+{
+    if (QFileInfo::exists(a)) return a;
+    return b; // اگر a نبود، b رو برمی‌گردونه (بعداً error می‌گیریم اگر این هم نبود)
+}

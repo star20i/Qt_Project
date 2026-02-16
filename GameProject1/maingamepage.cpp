@@ -434,3 +434,8 @@ void MainGamePage::onTileClicked(const QString &id)
             QMessageBox::information(this, "Move", "No valid destination.");
             return;
         }
+        m_mode = Mode::PickDestMove;
+        m_hint->setText("Pick destination cell.");
+        highlightIds(dests);
+        return;
+    }

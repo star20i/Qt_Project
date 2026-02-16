@@ -253,3 +253,11 @@ void MainGamePage::rebuildScene()
             m_ui.insert(id, ui);
         }
     }
+    // click handling: use scene mousePress by checking items? easiest: install event filter not now
+    // Instead: enable item selection and connect via view mousePress:
+    // We'll do a simple approach: set rect as selectable and handle in view mousePress event is complex.
+    // So: we add a transparent "text" click? We'll use QGraphicsRectItem's built-in mousePress by subclass normally.
+    // For now we rely on selectionChanged + data(0). We'll emulate by enabling selectable.
+    for(auto it=m_ui.begin(); it!=m_ui.end(); ++it){
+        it.value().rect->setFlag(QGraphicsItem::ItemIsSelectable, true);
+    }

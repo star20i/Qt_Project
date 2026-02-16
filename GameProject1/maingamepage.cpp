@@ -507,3 +507,11 @@ void MainGamePage::onTileClicked(const QString &id)
             QMessageBox::information(this, "WIN", QString("Player %1 wins!").arg(playerToChar(winner)));
             return;
         }
+        endTurn();
+        return;
+    }
+
+    if(m_mode==Mode::PickSergeantForCtrlRel){
+        if(!(n->pieceOwner==gs.currentPlayer && n->pieceType==AgentType::Sergeant)) return;
+        if(!gs.sergeantControlOrReleaseCurrent(id)) return;
+        updateOverlays();
